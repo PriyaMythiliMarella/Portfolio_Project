@@ -165,3 +165,170 @@ select * from Crops_Table
 order by country
 
 ![image](https://user-images.githubusercontent.com/83623143/201116342-048f328a-d1d4-4085-852c-5b95076dd97c.png)
+
+Country	crop  count_Year Avg_hectares Avg_production Avg_yield
+Argentina	wheat	236	5451790	8005423	1.49582203389831
+Australia	maize	938	27090	58856	3.02568990345629
+Australia	wheat	1786	971862	1275707	1.26890184877268
+Austria	wheat	10	303002	1706993	5.62336
+Belgium	wheat	10	203851	1784058	8.7535
+Brazil	wheat	588	419490	594350	1.17919469117007
+Brazil	maize	522	1147837	3178929	2.51577011494253
+Canada	wheat	220	9774674	16654355	1.66893682428182
+Canada	maize	220	531516	3634964	4.92160724141818
+Chile	wheat	176	588659	1167560	2.43120001802273
+Chile	maize	176	85894	516488	5.05535832886364
+
+
+Queries for data validation, cleaning & manipulation of climate change
+
+-- selecting temp table
+
+select * from [Portfoio_project].[dbo].[Temp$]
+where country is not null
+order by country, dt
+
+--trying to alter dt to int but there was a error
+
+alter table [Portfoio_project].[dbo].[Temp$]
+alter column dt int
+
+-- using cast to to convert datatype to date
+
+select cast([dt] as date) from [Portfoio_project].[dbo].[Temp$] as Date
+
+-- creating new tabe to make it simple as Table_1
+
+select CAST(dt as date) as Date, AverageTemperature, AverageTemperatureUncertainty, Country into Table_1
+from [Portfoio_project].[dbo].[Temp$] 
+
+
+select * from Table_1
+
+--using format to select only year from the date into temp_table
+
+select FORMAT(Date, 'yyyy') as Year, AverageTemperature, AverageTemperatureUncertainty, 
+Country into temp_table from Table_1
+where country is not null
+group by country
+order by country
+
+alter table Table_1
+alter column Date date
+
+
+select CAST(Date as date)
+format(Date, 'yyyy') from Table_1
+
+select FORMAT(Date, 'yyyy') as Year from Table_1 
+
+-- creating table as temperature by using aggregate and group by functions
+
+select count(Year) as Count_Year, AVG(AverageTemperature) as Avg_Temp, Avg(AverageTemperatureUncertainty) as Avg_Temp_Uncertainty, 
+Country into temperature from temp_table
+group by Country
+order by Country
+
+-- checking the data of united states
+
+select * from temperature
+where Country = 'United States'
+
+select * from temperature
+order by Country
+![image](https://user-images.githubusercontent.com/83623143/201116780-9739da0f-a896-444d-acdf-cc3104263c8d.png)
+
+ 
+
+
+1365	5.66115395894428	0.463844574780059	Ã…land
+1365	14.225853372434	0.494984604105572	Afghanistan
+1365	24.2422653958944	0.235238269794721	Africa
+1365	12.8859809384164	0.431643695014663	Albania
+1365	23.2662118768328	0.517530058651026	Algeria
+1365	26.7195095307918	0.483642228739003	American Samoa
+1365	11.462202346041	0.369406158357771	Andorra
+1365	21.962348973607	0.5805784457478	Angola
+1365	26.8114164222874	0.37850219941349	Anguilla
+
+
+Now two tables are prepared as Crops_Table and temperature
+Joining the two table where country is common to find the relation between temperature and crops
+--Joining the two tables using join on country column from 2 tables
+--and creating crops_vs_Temp table
+
+SELECT temperature.Country, Crops_Table.crop, temperature.Avg_Temp, temperature.Count_Year, Crops_Table.Avg_production, Crops_Table.Avg_yield
+into Crop_vs_Temp FROM Crops_Table
+JOIN temperature
+ON Crops_Table.country = temperature.Country
+
+select * from Crop_vs_Temp
+order by Country
+![image](https://user-images.githubusercontent.com/83623143/201116832-e9c0a51f-7076-482f-a9ca-42b993688a7a.png)
+ 
+
+Argentina	wheat	14.814848973607	1365	8005423	1.49582203389831
+Australia	maize	21.7401341642229	1365	58856	3.02568990345629
+Australia	wheat	21.7401341642229	1365	1275707	1.26890184877268
+Austria	wheat	6.49602052785924	1365	1706993	5.62336
+Belgium	wheat	9.78588782991203	1365	1784058	8.7535
+Brazil	maize	24.9535234604105	1365	3178929	2.51577011494253
+Brazil	wheat	24.9535234604105	1365	594350	1.17919469117007
+Canada	maize	-4.74358388278389	1365	3634964	4.92160724141818
+Canada	wheat	-4.74358388278389	1365	16654355	1.66893682428182
+Chile	wheat	9.57297800586512	1365	1167560	2.43120001802273
+Chile	maize	9.57297800586512	1365	516488	5.05535832886364
+
+Analysis
+Here we created new table as Crop_vs_Temp from joining two tables Crops_Table and temperature which contains country, crop, Avg_Temp, Count_Year, Avg_production, Avg_yield as columns.
+By using these we can find relation between temperature, crop production and crop yield of major countries from 1900 – 2017
+And also we can separately analyze the statistics of crop production, land used, and crop yield of different countries by using visualizations
+And also we can analyze average temperature and temperature uncertainty globally by using viz.
+
+Data visualization
+
+In this phase is where I:
+•	used Tableau as a tool that will create effective & compelling data viz  
+
+
+
+Average production of major countries across the world and difference between crops production from 1900 to 2017
+ 
+![image](https://user-images.githubusercontent.com/83623143/201116905-66051209-0387-4967-ae2e-f8e8dc8729cd.png)
+
+
+
+
+
+
+
+
+
+Average Yield of major countries across the world and difference between crops Yield from 1900 to 2017
+ 
+![image](https://user-images.githubusercontent.com/83623143/201116941-404a7df6-8434-4eab-9f1c-47c8b9c44a91.png)
+
+
+
+
+
+
+
+
+
+Temperature and temperature uncertainty acrosss the world
+ 
+![image](https://user-images.githubusercontent.com/83623143/201116971-b5e0fc3e-680d-4876-a3b7-7ba1095a5b81.png)
+
+
+
+
+
+
+
+
+
+Relationship between temperature vs crop prooduction vs crop yield across the world
+![image](https://user-images.githubusercontent.com/83623143/201117022-f1ee1cf6-d012-4aa6-a0f4-33658fe84e81.png)
+
+
