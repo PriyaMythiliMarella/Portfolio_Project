@@ -236,6 +236,8 @@ where Country = 'United States'
 
 select * from temperature
 order by Country
+
+
 ![image](https://user-images.githubusercontent.com/83623143/201116780-9739da0f-a896-444d-acdf-cc3104263c8d.png)
 
  
@@ -264,6 +266,8 @@ ON Crops_Table.country = temperature.Country
 
 select * from Crop_vs_Temp
 order by Country
+
+
 ![image](https://user-images.githubusercontent.com/83623143/201116832-e9c0a51f-7076-482f-a9ca-42b993688a7a.png)
  
 
@@ -329,6 +333,7 @@ Temperature and temperature uncertainty acrosss the world
 
 
 Relationship between temperature vs crop prooduction vs crop yield across the world
+
 ![image](https://user-images.githubusercontent.com/83623143/201117022-f1ee1cf6-d012-4aa6-a0f4-33658fe84e81.png)
 
 
