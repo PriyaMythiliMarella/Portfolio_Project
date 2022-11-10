@@ -263,7 +263,7 @@ ON Crops_Table.country = temperature.Country
 
 select * from Crop_vs_Temp
 order by Country
- 
+ ![image](https://user-images.githubusercontent.com/83623143/201110950-a29225c8-d981-4e17-92fa-fe83f7d77316.png)
 
 Argentina	wheat	14.814848973607	1365	8005423	1.49582203389831
 Australia	maize	21.7401341642229	1365	58856	3.02568990345629
